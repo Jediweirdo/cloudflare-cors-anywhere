@@ -88,16 +88,13 @@ addEventListener("fetch", async event => {
                 if (customHeaders !== null) {
                     Object.entries(customHeaders).forEach((entry) => (filteredHeaders[entry[0]] = entry[1]));
                 }
-
-                const newRequest = new Request(event.request, {
-                    redirect: "follow",
-                    headers: filteredHeaders
-                });
-
-                const response = await fetch(targetUrl, newRequest);
-                const responseHeaders = new Headers(response.headers);
-                const exposedHeaders = [];
-                const allResponseHeaders = {};
+                const newRequest = customHeaders["x-cancel-redirect"] ? new Request(event.request, { headers: filteredHeaders }) : new Request(event.request, { redirect: "follow", headers: filteredHeaders });
+                    
+                const response = await fetch(originUrl.search.substr(1), newRequest);
+                console.log({targetUrl: targetUrl, response: response});
+                let responseHeaders = new Headers(response.headers);
+                let exposedHeaders = [];
+                let allResponseHeaders = {};
                 for (const [key, value] of response.headers.entries()) {
                     exposedHeaders.push(key);
                     allResponseHeaders[key] = value;
@@ -107,7 +104,14 @@ addEventListener("fetch", async event => {
 
                 responseHeaders.set("Access-Control-Expose-Headers", exposedHeaders.join(","));
                 responseHeaders.set("cors-received-headers", JSON.stringify(allResponseHeaders));
-
+                
+                if (customHeaders["x-cancel-redirect"]) {
+                    responseHeaders.set("x-request-url", targetUrl);
+                    responseHeaders.set("x-final-url", response.url);
+                }
+                
+                console.log({targetUrl: targetUrl, responseHeaders: responseHeaders});
+                
                 const responseBody = isPreflightRequest ? null : await response.arrayBuffer();
 
                 const responseInit = {
@@ -118,7 +122,7 @@ addEventListener("fetch", async event => {
                 return new Response(responseBody, responseInit);
 
             } else {
-                const responseHeaders = new Headers();
+                let responseHeaders = new Headers();
                 responseHeaders = setupCORSHeaders(responseHeaders);
 
                 let country = false;
