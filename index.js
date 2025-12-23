@@ -144,7 +144,7 @@
         try {
           targetUrl = new URL(decodeURIComponent(decodeURIComponent(originUrl.search.substring(1))));
         } catch(Error) {
-          if (originUrl.search.toLowerCase() != "?uri") {
+            if (originUrl.search.toLowerCase() != "?uri" && originUrl.search.toLowerCase()) {
             return new Response(`{error: "${Error.name}", message: "Unable to decode given text '${originUrl.search.substring(1)}' into a URL. Is this a real website, and did you include 'http://' or 'https://'?"}`, {
               status: 404,
               statusText: Error.statusText || "PageNotFound",
