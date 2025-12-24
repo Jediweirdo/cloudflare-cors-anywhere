@@ -15,6 +15,8 @@ https://paypal.me/Zibri/5
 Post:
 http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html
 
+As of December 24th, 2025, this code is able to be deployed without issues to Cloudflare Workers. This repo does not support any production changes to JavaScript or Cloudflare's Workers beyond that date.
+
 My personal thanks to Damien Collis for his generous and unique donation.
 
 ## Note about the DEMO URL:
@@ -47,7 +49,7 @@ This project supports (but does not require) Cloudflare's [KV Instances](https:/
 
 To use, simply create the KV namespaces in your [cloudflare dashboard](https://developers.cloudflare.com/kv/get-started/#tab-panel-841), then uncomment the bindings code in the wrangler .toml and paste in the namespace IDs that correspond to each binding. 
 
-Note that the KV bindings take precedent over their manual variable counterparts, **regardless of whether the created KV is empty or not. **This can break the worker if you create an empty whitelist origin KV binding, as it will default to banning every request sent to it.** To avoid this, add `.*` or your desired regex origin to the keys of the binding before deploying.  
+Note that the KV bindings take precedent over their manual variable counterparts, regardless of if the created KV is empty or not. **This can break the worker if you create an empty whitelist origin KV binding, as it will default to banning every request sent to it.** To avoid this, add `.*` or your desired regex origin to the keys of the binding before deploying.  
 
 Alternatively, just edit the manual binding equivalent keys found inside the index.js file
 
