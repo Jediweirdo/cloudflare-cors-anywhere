@@ -90,3 +90,4 @@ Some CORS-proxy-specific headers you expect to send or receive while requesting 
 - Cannot be used to query information from Cloudflare or other Cloudflare workers
 - Does not support streaming or any request that expects a constant, stable connection between the worker and the target URL
 - Has no protections against infinite or lengthy redirect loops
+- Has no automatic protections against people abusing the worker (no official rate limiting code) 
