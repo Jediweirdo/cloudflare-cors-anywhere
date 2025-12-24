@@ -239,7 +239,7 @@ export default {
       targetUrl = new URL(decodeURIComponent(decodeURIComponent(originUrl.search.substring(1))));
     } catch (error) {
       if (originUrl.search.toLowerCase() != "?uri" && originUrl.search.toLowerCase()) {
-        return new Response(`{error: "${error.name}", message: "Unable to decode given text '${originUrl.search.substring(1)}' into a URL. Is this a real website, and did you include 'http://' or 'https://'?"}`, {
+        return new Response(`{"error": "${error.name}", "message": "Unable to decode given text '${originUrl.search.substring(1)}' into a URL. Is this a real website, and did you include 'http://' or 'https://'?"}`, {
           status: 404,
           statusText: error.statusText || "PageNotFound",
           headers: { "Content-Type": "text/plain" }
@@ -303,7 +303,7 @@ export default {
         }
       } catch (error) {
         responseBody = error;
-        response = new Response(`{error: "${error.name}", message: "${error.message}"}`, {
+        response = new Response(`{"error": "${error.name}", "message": "${error.message}"}`, {
           status: 400,
           statusText: error.name || "FetchError",
           headers: {}
