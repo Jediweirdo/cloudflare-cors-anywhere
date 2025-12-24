@@ -4,3 +4,15 @@ compatibility_date = "2023-04-17"
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]
 enabled = false
+# Make sure to update these bindings to your own bindings before deploying this toml
+# Feel free to comment/delete this section if you do not want to set up and bind a free KV instance in your dashboard
+# Manual reassignment via the index.js is still supported (though the KV instance values will take precedent if they exist)
+[[kv_namespaces]]
+binding = "config" 
+id = "<BINDING_ID>"
+[[kv_namespaces]]
+binding = "blacklist"
+id = "<BINDING_ID>"
+[[kv_namespaces]]
+binding = "whitelist"
+id = "<BINDING_ID>"
