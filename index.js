@@ -54,207 +54,130 @@ Donate:</br>
 Limits:</br>
  100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes`,
   // Just the readme file formatted into a website (props to https://convertmarkdowntohtml.com/, a random markdown to html converter I found online)
-  usage: `
-    <h1>cloudflare-cors-anywhere</h1>
-    <p>Cloudflare CORS proxy in a worker.</p>
-  
-    <p>CLOUDFLARE-CORS-ANYWHERE</p>
-  
-    <p><strong>Source:</strong><br>
-      <a href="https://github.com/Zibri/cloudflare-cors-anywhere">https://github.com/Zibri/cloudflare-cors-anywhere</a>
-    </p>
-  
-    <p><strong>Demo:</strong><br>
-      <a href="https://test.cors.workers.dev">https://test.cors.workers.dev</a>
-    </p>
-  
-    <p><strong>Donate:</strong><br>
-      <a href="https://paypal.me/Zibri/5">https://paypal.me/Zibri/5</a>
-    </p>
-  
-    <p><strong>Post:</strong><br>
-      <a href="http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html">
-        http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html
-      </a>
-    </p>
-  
-    <p>My personal thanks to Damien Collis for his generous and unique donation.</p>
-  
-    <h2>Note about the DEMO URL:</h2>
-  
-    <p>
-      Abuse (other than testing) of the demo will result in a ban.<br>
-      The demo accepts only fetch and xmlhttprequest.
-    </p>
-  
-    <p>
-      To create your own is very easy; you just need to set up a Cloudflare account and upload the worker code.
-    </p>
-  
-    <h2>Features</h2>
-    <ul>
-      <li>Forwards any API method in the REST API spec (GET, PUT, PATCH, POST, and DELETE)</li>
-      <li>Status Code mirroring</li>
-      <li>Forbidden Header support</li>
-      <li>Customizable redirect behavior (infinite follow or don't follow at all)</li>
-    </ul>
-  
-    <h2>Deployment</h2>
-  
-    <p>
-      This project is written in
-      <a href="https://workers.cloudflare.com/">Cloudflare Workers</a>,
-      and can be easily deployed with
-      <a href="https://developers.cloudflare.com/workers/wrangler/install-and-update/">Wrangler CLI</a>.
-    </p>
-  
-    <pre><code class="language-bash">wrangler deploy
+  usage:  `<h1>cloudflare-cors-anywhere</h1>
+  <p>Cloudflare CORS proxy in a worker.</p>
+  <p>CLOUDFLARE-CORS-ANYWHERE</p>
+  <p>Source:<br><a href="https://github.com/Zibri/cloudflare-cors-anywhere">https://github.com/Zibri/cloudflare-cors-anywhere</a></p>
+  <p>Demo:<br><a href="https://test.cors.workers.dev">https://test.cors.workers.dev</a></p>
+  <p>Donate:<br><a href="https://paypal.me/Zibri/5">https://paypal.me/Zibri/5</a></p>
+  <p>Post:<br><a href="http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html">http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html</a></p>
+  <p>As of December 24th, 2025, this code is able to be deployed without issues to Cloudflare Workers. This repo does not support any production changes to JavaScript or Cloudflare&#39;s Workers beyond that date.</p>
+  <p>My personal thanks to Damien Collis for his generous and unique donation.</p>
+  <h2>Note about the DEMO URL:</h2>
+  <p>Abuse (other than testing) of the demo will result in a ban.<br>The demo accepts only fetch and xmlhttprequest.  </p>
+  <p>To create your own is very easy; you just need to set up a Cloudflare account and upload the worker code.  </p>
+  <h2>Features</h2>
+  <ul>
+  <li>Forwards any API method in the REST API spec (GET, PUT, PATCH, POST, and DELETE) </li>
+  <li>Status Code mirroring</li>
+  <li>Forbidden Header support</li>
+  <li>Customizable redirect behavior (infinite follow or don&#39;t follow at all)</li>
+  </ul>
+  <h2>Deployment</h2>
+  <p>This project is written in <a href="https://workers.cloudflare.com/">Cloudflare Workers</a>, and can be easily deployed with <a href="https://developers.cloudflare.com/workers/wrangler/install-and-update/">Wrangler CLI</a>.</p>
+  <pre><code class="language-bash">wrangler deploy
   </code></pre>
-  
-    <p>
-      If you want to observe the console.log information of your worker outside of preview and quick testing, set
-      <code>enabled</code> to true in the
-      <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/#tab-panel-6229">wrangler .toml</a>
-      before deployment, or manually enable Worker Logs in your worker's settings on Cloudflare's Dashboard (located under the
-      &quot;observability&quot; section).
-    </p>
-  
-    <h3>KV Instances</h3>
-  
-    <p>
-      This project supports (but does not require) Cloudflare's
-      <a href="https://developers.cloudflare.com/kv/get-started/">KV Instances</a>
-      for real-time updating of select variables, eliminating the need for redeployment. Currently, the following variables can
-      be changed through KV namespaces:
-    </p>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>Binding Name</th>
-          <th>Manual Binding Equivalent</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>blacklist</td>
-          <td><code>MANUAL_BLACKLIST_URLS</code></td>
-          <td>List the URLs as keys in the namespace. Any URL in this list gets its request refused. Supports regexp</td>
-        </tr>
-        <tr>
-          <td>whitelist</td>
-          <td><code>MANUAL_WHITELIST_ORIGINS</code></td>
-          <td>List the URL origins as keys in the namespace. Any URL origin <em>not</em> in this list will have its request refused. Supports regexp</td>
-        </tr>
-        <tr>
-          <td>config</td>
-          <td><code>CONFIG</code></td>
-          <td>
-            Currently supports <code>DEBUG</code> and <code>ALLOW_NULL_ORIGINS</code> config keys (case sensitive). Values must be
-            in the form of booleans (either typed out as &quot;true&quot; or &quot;false&quot; (case <strong>in</strong>sensitive)).
-            <code>DEBUG</code> enables console logging of some variables, while <code>ALLOW_NULL_OPTIONS</code> decides whether or
-            not requests from null origins (<code>data://</code>, <code>file://</code>, <code>blob://</code>, or any other
-            requests that do not share their origin) are allowed to send requests through the proxy.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <p>
-      To use, simply create the KV namespaces in your
-      <a href="https://developers.cloudflare.com/kv/get-started/#tab-panel-841">cloudflare dashboard</a>, then uncomment the
-      bindings code in the wrangler .toml and paste in the namespace IDs that correspond to each binding.
-    </p>
-  
-    <p>
-      Note that the KV bindings take precedent over their manual variable counterparts, <strong>regardless of whether the created
-      KV is empty or not.</strong> This can break the worker if you create an empty whitelist origin KV binding, as it will default
-      to banning every request sent to it. To avoid this, add <code>.*</code> or your desired regex origin to the keys of the
-      binding before deploying.
-    </p>
-  
-    <p>
-      Alternatively, just edit the manual binding equivalent keys found inside the <code>index.js</code> file.
-    </p>
-  
-    <h2>Usage Example</h2>
-  
-    <pre><code class="language-javascript">fetch('https://test.cors.workers.dev/?https://httpbin.org/post', {
-    method: 'post',
+  <p>If you want to observe the console.log information of your worker outside of preview and quick testing, set <code>enabled</code> to true in the <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/#tab-panel-6229">wrangler .toml</a> before deployment, or manually enable Worker Logs in your worker&#39;s settings on Cloudflare&#39;s Dashboard (located under the &quot;observability&quot; section)</p>
+  <h3>KV Instances</h3>
+  <p>This project supports (but does not require) Cloudflare&#39;s <a href="https://developers.cloudflare.com/kv/get-started/">KV Instances</a> for real-time updating of select variables, eliminating the need for redeployment. Currently, the following variables can be changed through KV namespaces:</p>
+  <table>
+  <thead>
+  <tr>
+  <th>Binding Name</th>
+  <th>Manual Binding Equivalent</th>
+  <th>Notes</th>
+  </tr>
+  </thead>
+  <tbody><tr>
+  <td>blacklist</td>
+  <td><code>MANUAL_BLACKLIST_URLS</code></td>
+  <td>List the URLs as keys in the namespace. Any URL in this list gets its request refused. Supports regexp</td>
+  </tr>
+  <tr>
+  <td>whitelist</td>
+  <td><code>MANUAL_WHITELIST_ORIGINS</code></td>
+  <td>List the URL origins as keys in the namespace. Any URL origin <em>not</em> in this list will have its request refused. Supports regexp</td>
+  </tr>
+  <tr>
+  <td>config</td>
+  <td><code>CONFIG</code></td>
+  <td>Currently supports <code>DEBUG</code> and <code>ALLOW_NULL_ORIGINS</code> config keys (case sensitive). Values must be in the form of booleans (either typed out as &quot;true&quot; or &quot;false&quot; (case <strong>in</strong>sensitive)). <code>DEBUG</code> enables console logging of some variables, while <code>ALLOW_NULL_OPTIONS</code> decides whether or not requests from null origins (<code>data://</code>, <code>file://</code>, <code>blob://</code>, or any other requests that do not share their origin) are allowed to send requests through the proxy. If true, any null origin request will be allowed through REGARDLESS OF WHITELIST ORIGIN SETTINGS! </td>
+  </tr>
+  </tbody></table>
+  <p>To use, simply create the KV namespaces in your <a href="https://developers.cloudflare.com/kv/get-started/#tab-panel-841">cloudflare dashboard</a>, then uncomment the bindings code in the wrangler .toml and paste in the namespace IDs that correspond to each binding. </p>
+  <p>Note that the KV bindings take precedent over their manual variable counterparts, regardless of if the created KV is empty or not. <strong>This can break the worker if you create an empty whitelist origin KV binding, as it will default to banning every request sent to it.</strong> To avoid this, add <code>.*</code> or your desired regex origin to the keys of the binding before deploying.  </p>
+  <p>Alternatively, just edit the manual binding equivalent keys found inside the index.js file</p>
+  <h2>Usage Example</h2>
+  <pre><code class="language-javascript">fetch(&#39;https://test.cors.workers.dev/?https://httpbin.org/post&#39;, {
+    method: &#39;post&#39;,
     headers: {
-      'x-foo': 'bar',
-      'x-bar': 'foo',
-      'x-cors-headers': JSON.stringify({
+      &#39;x-foo&#39;: &#39;bar&#39;,
+      &#39;x-bar&#39;: &#39;foo&#39;,
+      &#39;x-cors-headers&#39;: JSON.stringify({
         // allows to send forbidden headers
         // https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name
-        'cookies': 'x=123'
+        &#39;cookies&#39;: &#39;x=123&#39;
       }) 
     }
   }).then(res =&gt; {
     // allows to read all headers (even forbidden headers like set-cookies)
-    const headers = JSON.parse(res.headers.get('cors-received-headers'))
+    const headers = JSON.parse(res.headers.get(&#39;cors-received-headers&#39;))
     console.log(headers)
     return res.json()
   }).then(console.log)
   </code></pre>
-  
-    <h3>Optional Headers</h3>
-  
-    <p>Some CORS-proxy-specific headers you expect to send or receive while requesting data through this proxy:</p>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>Header</th>
-          <th>Send or Received?</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>cors-recieved-headers</td>
-          <td>Recieved</td>
-          <td>Stores all recieved headers</td>
-        </tr>
-        <tr>
-          <td>x-cors-headers</td>
-          <td>Send</td>
-          <td>Add any forbidden headers you wish to send here</td>
-        </tr>
-        <tr>
-          <td>x-cancel-redirect</td>
-          <td>Send</td>
-          <td>Stops the CORS proxy from following redirects</td>
-        </tr>
-        <tr>
-          <td>x-final-url</td>
-          <td>Received</td>
-          <td>If the <code>x-cancel-redirect</code> header is passed, the CORS proxy returns the URL it would have followed under this header</td>
-        </tr>
-        <tr>
-          <td>x-request-url</td>
-          <td>Received</td>
-          <td>If the <code>x-cancel-redirect</code> header is passed, the CORS proxy returns the URL it got the redirect notice from under this header</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <h2>Known Issues</h2>
-    <ul>
-      <li>Previewing the proxy in Cloudflare's preview causes a gateway 502 crash. However, it should function as intended when deployed to production.</li>
-      <li>Cannot get around sites that ban requests from Cloudflare</li>
-      <li>Cannot be used to query information from Cloudflare or other Cloudflare workers</li>
-      <li>Does not support streaming or any request that expects a constant, stable connection between the worker and the target URL</li>
-      <li>Has no protections against infinite or lengthy redirect loops</li>
-    </ul>
+  <h3>Optional Headers</h3>
+  <p>Some CORS-proxy-specific headers you expect to send or receive while requesting data through this proxy</p>
+  <table>
+  <thead>
+  <tr>
+  <th>Header</th>
+  <th>Send or Received?</th>
+  <th>Notes</th>
+  </tr>
+  </thead>
+  <tbody><tr>
+  <td>cors-recieved-headers</td>
+  <td>Recieved</td>
+  <td>Stores all recieved headers</td>
+  </tr>
+  <tr>
+  <td>x-cors-headers</td>
+  <td>Send</td>
+  <td>Add any forbidden headers you wish to send here</td>
+  </tr>
+  <tr>
+  <td>x-cancel-redirect</td>
+  <td>Send</td>
+  <td>Stops the CORS proxy from following redirects</td>
+  </tr>
+  <tr>
+  <td>x-final-url</td>
+  <td>Received</td>
+  <td>If the <code>x-cancel-redirect</code> header is passed, the CORS proxy returns the URL it would have followed under this header</td>
+  </tr>
+  <tr>
+  <td>x-request-url</td>
+  <td>Received</td>
+  <td>If the <code>x-cancel-redirect</code> header is passed, the CORS proxy returns the URL it got the redirect notice from under this header</td>
+  </tr>
+  </tbody></table>
+  <h2>Known Issues</h2>
+  <ul>
+  <li>Previewing the proxy in Cloudflare&#39;s preview causes a gateway 502 crash. However, it should function as intended when deployed to production.</li>
+  <li>Cannot get around sites that ban requests from Cloudflare</li>
+  <li>Cannot be used to query information from Cloudflare or other Cloudflare workers</li>
+  <li>Does not support streaming or any request that expects a constant, stable connection between the worker and the target URL</li>
+  <li>Has no protections against infinite or lengthy redirect loops</li>
+  <li>Has no automatic protections against people abusing the worker (no official rate-limiting code)</li>
+  </ul>
   `
 };
 
 //--- MANUAL SETTINGS (ignore if you're using Cloudflare bindings)
 const CONFIG = {
   DEBUG: false, // Prints debug messages if true, skips them if false
-  ALLOW_NULL_ORIGINS: false // "false" bans requests from null origins like `data:` and `file:` 
+  ALLOW_NULL_ORIGINS: false // "false" bans requests from null origins like `data:` and `file:`. "true" lets null origins through REGARDLESS OF WHAT THE WHITELIST SAYS
 };
 
 // index.js
