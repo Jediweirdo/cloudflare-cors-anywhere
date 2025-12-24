@@ -45,7 +45,7 @@ This project supports (but does not require) Cloudflare's [KV Instances](https:/
 |--|--|--|
 |  blacklist  |   `MANUAL_BLACKLIST_URLS`  |  List the URLs as keys in the namespace. Any URL in this list gets its request refused. Supports regexp|
 |  whitelist  |  `MANUAL_WHITELIST_ORIGINS`|  List the URL origins as keys in the namespace. Any URL origin *not* in this list will have its request refused. Supports regexp|
-|  config     |   `CONFIG`                 |  Currently supports `DEBUG` and `ALLOW_NULL_ORIGINS` config keys (case sensitive). Values must be in the form of booleans (either typed out as "true" or "false" (case **in**sensitive)). `DEBUG` enables console logging of some variables, while `ALLOW_NULL_OPTIONS` decides whether or not requests from null origins (`data://`, `file://`, `blob://`, or any other requests that do not share their origin) are allowed to send requests through the proxy|
+|  config     |   `CONFIG`                 |  Currently supports `DEBUG` and `ALLOW_NULL_ORIGINS` config keys (case sensitive). Values must be in the form of booleans (either typed out as "true" or "false" (case **in**sensitive)). `DEBUG` enables console logging of some variables, while `ALLOW_NULL_OPTIONS` decides whether or not requests from null origins (`data://`, `file://`, `blob://`, or any other requests that do not share their origin) are allowed to send requests through the proxy. If true, any null origin request will be allowed through REGARDLESS OF WHITELIST ORIGIN SETTINGS! |
 
 To use, simply create the KV namespaces in your [cloudflare dashboard](https://developers.cloudflare.com/kv/get-started/#tab-panel-841), then uncomment the bindings code in the wrangler .toml and paste in the namespace IDs that correspond to each binding. 
 
@@ -90,4 +90,4 @@ Some CORS-proxy-specific headers you expect to send or receive while requesting 
 - Cannot be used to query information from Cloudflare or other Cloudflare workers
 - Does not support streaming or any request that expects a constant, stable connection between the worker and the target URL
 - Has no protections against infinite or lengthy redirect loops
-- Has no automatic protections against people abusing the worker (no official rate limiting code) 
+- Has no automatic protections against people abusing the worker (no official rate-limiting code) 
