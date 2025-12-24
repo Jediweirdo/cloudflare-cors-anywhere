@@ -17,23 +17,18 @@ The main goal is to facilitate cross-origin requests while enforcing specific se
 // whitelist = [ "^http.?://www.zibri.org$", "zibri.org$", "test\\..*" ];  // regexp for whitelisted urls
 // blacklist = []
 
-
-//--- SYSTEM CONSTANTS
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-
 //--- CLOUDFLARE BINDINGS (ignore if you don't want to use them)
-const BINDING_BLACKLIST_NAME = "blacklist" // Change this to the name of the binding variable that holds your blacklist keys
-const BINDING_WHITELIST_NAME = "whitelist" // Change this to the name of the binding variable that holds your whitelist keys
+const BINDING_BLACKLIST_NAME = "blacklist"; // Change this to the name of the binding variable that holds your blacklist keys
+const BINDING_WHITELIST_NAME = "whitelist"; // Change this to the name of the binding variable that holds your whitelist keys
 // Note about Cloudflare bindings: Add whitelist/blacklisted sites to the KEYS, not the values. 
 // Note^2 about Cloudflare bindings: If no bindings are found, it defaults to the manual bindings. 
 // Note^2.5 about Cloudflare bindings: Created, but empty bindings do not trigger the manual bindings
 
-const BINDING_SETTINGS_NAME = "config" // Change this to the name of the binding variable that holds your CORS settings
+const BINDING_SETTINGS_NAME = "config"; // Change this to the name of the binding variable that holds your CORS settings
 // Note^3 about Cloudflare bindings: Refer to the CONFIG dictionary for the key names to insert into your namespace
 // Note^3.5 about Cloudflare bindings: If no bindings are found, it defaults to the manual config bindings
 
-//--- MANUAL CONSTANTS (ignore if you're using cloudflare bindings)
+//--- MANUAL CONSTANTS (ignore if you're using Cloudflare bindings)
 const MANUAL_BLACKLIST_URLS = ["https://thing.com"]; // Change these if you don't want to set up a binding to blacklist URLs
 const MANUAL_WHITELIST_ORIGINS = [".*"]; // Change these if you don't want to set up a binding to whitelist URL Origins
 //--- HTML PAGE INFORMATION
@@ -129,28 +124,28 @@ Limits:</br>
       </body>`
 };
 
-//--- MANUAL SETTINGS (ignore if you're using cloudflare bindings)
+//--- MANUAL SETTINGS (ignore if you're using Cloudflare bindings)
 const CONFIG = {
   DEBUG: false, // Prints debug messages if true, skips them if false
   ALLOW_NULL_ORIGINS: false // "false" bans requests from null origins like `data:` and `file:` 
 };
 
 // index.js
-const index_default = {
+export default {
   async fetch(request, env) {
     const isPreflightRequest = request.method === "OPTIONS";
     const originUrl = new URL(request.url);
     const originHeader = request.headers.get("Origin");
     const connectingIp = request.headers.get("CF-Connecting-IP");
-    const blacklistUrls = env[BINDING_BLACKLIST_NAME] || MANUAL_BLACKLIST_URLS // Internal unformatted blacklist of regexp banned URLs. DO NOT TOUCH!!!
-    const whitelistOrigins = env[BINDING_WHITELIST_NAME] || MANUAL_WHITELIST_ORIGINS // Internal unformatted whitelist of regexp allows URL Origins. DO NOT TOUCH!!!
+    const blacklistUrls = env[BINDING_BLACKLIST_NAME] || MANUAL_BLACKLIST_URLS; // Internal unformatted blacklist of regexp banned URLs. DO NOT TOUCH!!!
+    const whitelistOrigins = env[BINDING_WHITELIST_NAME] || MANUAL_WHITELIST_ORIGINS; // Internal unformatted whitelist of regexp allows URL Origins. DO NOT TOUCH!!!
     
     let customHeaders = request.headers.get("x-cors-headers"); //Handles "forbidden" headers
     let configDict = env[BINDING_SETTINGS_NAME] || CONFIG; // Unformatted settings dict
     let config = {}; // Formatted settings dict
     let targetUrl; // passed uri URL
     let debug; // Internal Settings flag to activate console.log()/warn() stuff. DO NOT TOUCH!!!
-    let allowNullOrigins; // Internal Settigns flag to allow/disallow unknown origins. DO NOT TOUCH!!!
+    let allowNullOrigins; // Internal Settings flag to allow/disallow unknown origins. DO NOT TOUCH!!!
         
     // Converts KV keys into a regular dict. It's not good for anything more than booleans at the moment
     if (typeof configDict.list === "function") {
@@ -160,7 +155,7 @@ const index_default = {
           config[key] = kvVal.trim().toLowerCase() == "true";
         } else if (kvVal) {
           // This warning can't go under debug because... it's not set yet
-          console.warn(`Assigning "${key}" to ${typeof kvVal} "${kvVal}". Was this value saved correctly?`);
+          console.warn(`Assigning "${key}" as ${typeof kvVal} "${kvVal}". Was this value saved correctly?`);
           config[key] = kvVal;
         } else {
           config[key] = CONFIG[key]; // Falls back to defualt if key not in the KV Instance
@@ -173,12 +168,12 @@ const index_default = {
     debug = config.DEBUG;
     allowNullOrigins = config.ALLOW_NULL_ORIGINS;
 
-    if (debug) { console.log(config, debug, allowNullOrigins); }
+    if (debug) { console.log("Configs:", config, "| Debug:", typeof debug, debug, "| AllowNullOrigins:", typeof allowNullOrigins, allowNullOrigins); }
 
     // Function to check if a given URI or origin is listed in the whitelist or blacklist
     async function isListedInWhitelist(uri, listing) {
       let isListed = false;
-      console.log("LITERALLY ANYTHING", blacklistUrls, whitelistOrigins, listing);
+      if (debug){ console.log("Blacklist:", blacklistUrls, "| Whitelist:", whitelistOrigins, "| Current:", listing, "uri:", typeof uri, uri); }
       // Compatibility layer to get the right thing
       if (typeof (listing.list) === "function") {
         const listingDict = await listing.list()
@@ -188,11 +183,11 @@ const index_default = {
             listing.push(key.name);
           }
         });
-        if (debug) { console.log("This is a KV list", listing, "| Listing dict:", listingDict); }
+        if (debug) { console.log("This is a KV list:", listing, "| Listing dict:", listingDict); }
       } else {
-        if (debug) { console.log("This is a manual list", listing); }
+        if (debug) { console.log("This is a manual list:", listing); }
       }
-      if (typeof uri === "string") {
+      if (typeof uri === "string" && uri != "null") {
 
         listing.forEach((pattern) => {
           if (uri.match(pattern) !== null) {
@@ -206,7 +201,6 @@ const index_default = {
       }
       return isListed;
     }
-    __name(isListedInWhitelist, "isListedInWhitelist");
     
     // Function to modify headers to enable CORS
     function setupCORSHeaders(headers) {
@@ -221,7 +215,6 @@ const index_default = {
       }
       return headers;
     }
-    __name(setupCORSHeaders, "setupCORSHeaders");
     
     // Function that builds an HTML page based on the passed inputs. Kind of useless on retrospect
     function addHTML(pageHTMLKey, extraText = null) {
@@ -240,22 +233,21 @@ const index_default = {
           </html>
           `;
     }
-    __name(addHTML, "addHTML");
     
     // Error checking to make sure the passed URL uri is actually a URL
     try {
       targetUrl = new URL(decodeURIComponent(decodeURIComponent(originUrl.search.substring(1))));
-    } catch (Error) {
+    } catch (error) {
       if (originUrl.search.toLowerCase() != "?uri" && originUrl.search.toLowerCase()) {
-        return new Response(`{error: "${Error.name}", message: "Unable to decode given text '${originUrl.search.substring(1)}' into a URL. Is this a real website, and did you include 'http://' or 'https://'?"}`, {
+        return new Response(`{error: "${error.name}", message: "Unable to decode given text '${originUrl.search.substring(1)}' into a URL. Is this a real website, and did you include 'http://' or 'https://'?"}`, {
           status: 404,
-          statusText: Error.statusText || "PageNotFound",
+          statusText: error.statusText || "PageNotFound",
           headers: { "Content-Type": "text/plain" }
         });
       }
     }
     
-    if (debug){ console.log(targetUrl, originHeader); }
+    if (debug){ console.log("Target:", targetUrl, "| Origin:", originHeader); }
     
     // Error checking to make sure the given URL is in the given white/blacklist
     if (targetUrl && await isListedInWhitelist(targetUrl.href, blacklistUrls) || !(await isListedInWhitelist(originHeader, whitelistOrigins))) {
@@ -275,9 +267,9 @@ const index_default = {
     if (customHeaders !== null) {
       try {
         customHeaders = JSON.parse(customHeaders);
-      } catch (Error2) {
+      } catch (error) {
         if (debug) {
-          console.warn(`Given customHeaders ${customHeaders.toString()} (type ${typeof customHeaders}) failed JSON parsing with the following error:`, Error2);
+          console.warn(`Given customHeaders ${customHeaders.toString()} (type ${typeof customHeaders}) failed JSON parsing with the following error:`, error);
         }
       }
     }
@@ -293,7 +285,7 @@ const index_default = {
       if (customHeaders !== null) {
         Object.entries(customHeaders).forEach((entry) => filteredHeaders[entry[0]] = entry[1]);
       }
-      // If included an x-cancel-redirect" key, the program won't automatically follow redirects
+      // If there is an x-cancel-redirect" key, the program won't automatically follow redirects
       let newRequest;
       if (customHeaders && customHeaders["x-cancel-redirect"]) {
         newRequest = new Request(request, { headers: filteredHeaders });
@@ -307,17 +299,17 @@ const index_default = {
         response = await fetch(originUrl.search.substring(1), newRequest);
         responseBody = isPreflightRequest ? null : await response.arrayBuffer();
         if (debug) {
-          console.log({ targetUrl, response });
+          console.log("Target URL:", targetUrl, "Response:", response);
         }
-      } catch (Error2) {
-        responseBody = Error2;
-        response = new Response(Error2.toString(), {
+      } catch (error) {
+        responseBody = error;
+        response = new Response(`{error: "${error.name}", message: "${error.message}"}`, {
           status: 400,
-          statusText: Error2.name || "FetchError",
+          statusText: error.name || "FetchError",
           headers: {}
         });
         if (debug) {
-          console.warn({ targetUrl, response });
+          console.warn("Target URL:", targetUrl, "| Response:", response, "Error:", error.stack);
         }
       }
 
@@ -341,7 +333,7 @@ const index_default = {
       }
 
       if (debug) {
-        console.log({ targetUrl, responseHeaders });
+        console.log("Target URL:", targetUrl, "Response Headers:", responseHeaders);
       }
       
       const responseInit = {
@@ -350,7 +342,7 @@ const index_default = {
         statusText: isPreflightRequest ? "OK" : response.statusText
       };
       if (debug) {
-        console.log({ responseBody, responseInit });
+        console.log("Target URL:", responseBody, "ResponseInit:", responseInit);
       }
 
       // Might 502 gateway crash when used in Cloudflare's preview window, but seems to work fine in prod. No idea why...
@@ -410,8 +402,4 @@ const index_default = {
       );
     }
   }
-};
-export {
-  index_default as default
-};
-//# sourceMappingURL=index.js.map
+}//# sourceMappingURL=index.js.map
