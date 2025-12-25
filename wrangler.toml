@@ -10,12 +10,12 @@ enabled = false
 # Feel free to comment/delete this section if you do not want to set up and bind a free KV instance in your dashboard
 # Manual reassignment via the index.js is still supported (though the KV instance values will take precedent if they exist)
 # Uncomment the below .toml code to use KV instances in the deployment
-# [[kv_namespaces]]
-# binding = "config" 
-# id = "<BINDING_ID>"
-# [[kv_namespaces]]
-# binding = "blacklist"
-# id = "<BINDING_ID>"
-# [[kv_namespaces]]
-# binding = "whitelist"
-# id = "<BINDING_ID>"
+[[kv_namespaces]]
+binding = "config" 
+id = "c2e95c99173244c8aa5c84d760274070"
+[[kv_namespaces]]
+binding = "blacklist"
+id = "248190d946ff444193962f66c520ae15"
+[[kv_namespaces]]
+binding = "whitelist"
+id = "311a4616977c4e3bb48833058690aa73"
