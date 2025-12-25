@@ -4,8 +4,8 @@ Cloudflare CORS proxy in a worker.
 CLOUDFLARE-CORS-ANYWHERE
 
 Source:
-[https://github.com/Zibri/cloudflare-cors-anywhere
-](https://github.com/Jediweirdo/cloudflare-cors-anywhere/)
+[https://github.com/Zibri/cloudflare-cors-anywhere](https://github.com/Jediweirdo/cloudflare-cors-anywhere)
+
 Forked from:
 [https://github.com/Zibri/cloudflare-cors-anywhere](https://github.com/Zibri/cloudflare-cors-anywhere)
 
