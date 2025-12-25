@@ -4,20 +4,15 @@ Cloudflare CORS proxy in a worker.
 CLOUDFLARE-CORS-ANYWHERE
 
 Source:
-https://github.com/Zibri/cloudflare-cors-anywhere
+[https://github.com/Zibri/cloudflare-cors-anywhere
+](https://github.com/Jediweirdo/cloudflare-cors-anywhere/)
+Forked from:
+[https://github.com/Zibri/cloudflare-cors-anywhere](https://github.com/Zibri/cloudflare-cors-anywhere)
 
 Demo:
-https://test.cors.workers.dev
-
-Donate:
-https://paypal.me/Zibri/5
-
-Post:
-http://www.zibri.org/2019/07/your-own-cors-anywhere-proxy-on.html
+[https://cors-proxy.jediweirdo.workers.dev](https://cors-proxy.jediweirdo.workers.dev)
 
 As of December 24th, 2025, this code is able to be deployed without issues to Cloudflare Workers. This repo does not support any production changes to JavaScript or Cloudflare's Workers beyond that date.
-
-My personal thanks to Damien Collis for his generous and unique donation.
 
 ## Note about the DEMO URL:
 
