@@ -4,8 +4,7 @@ Cloudflare CORS proxy in a worker.
 CLOUDFLARE-CORS-ANYWHERE
 
 Source:
-[https://github.com/Zibri/cloudflare-cors-anywhere](https://github.com/Jediweirdo/cloudflare-cors-anywhere)
-
+[https://github.com/Jediweirdo/cloudflare-cors-anywhere](https://github.com/Jediweirdo/cloudflare-cors-anywhere)
 Forked from:
 [https://github.com/Zibri/cloudflare-cors-anywhere](https://github.com/Zibri/cloudflare-cors-anywhere)
 
@@ -16,8 +15,8 @@ As of December 24th, 2025, this code is able to be deployed without issues to Cl
 
 ## Note about the DEMO URL:
 
-Abuse (other than testing) of the demo will result in a ban.  
-The demo accepts only fetch and xmlhttprequest.  
+Abuse (other than testing) of the demo will result in a ban. 
+To enforce these rules, all incoming requests to the demo URL get logged and can be monitored by me.
 
 To create your own is very easy; you just need to set up a Cloudflare account and upload the worker code.  
 ## Features
