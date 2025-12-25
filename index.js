@@ -44,17 +44,17 @@ const PAGE_HTML = {
   // Does not include customizing usage URL, the IP/Country/Datacenter info, or the custom header info that appears if you pass any in
   homepage: `<h1>CLOUDFLARE-CORS-ANYWHERE</br>
 </h1>Source:</br>
-<a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere/'>https://github.com/Jediweirdo/cloudflare-cors-anywhere/
+<a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere/'>https://github.com/Jediweirdo/cloudflare-cors-anywhere/>. 
 Forked from <a href='https://github.com/Zibri/cloudflare-cors-anywhere'>https://github.com/Zibri/cloudflare-cors-anywhere</a></br>
-
 Limits:</br>
- 100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes`,
+ 100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes
+ Incoming requests using this URL are monitored to enforce rules. If you do not want this, <a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere'>create your own for free</a>`,
   // Just the readme file formatted into a website (props to a random markdown to html converter I found online)
   usage: `<h1 id="cloudflare-cors-anywhere">cloudflare-cors-anywhere</h1>
 <p>Cloudflare CORS proxy in a worker.</p>
 <p>CLOUDFLARE-CORS-ANYWHERE</p>
 <p>Source:<br>
-<a href="https://github.com/Jediweirdo/cloudflare-cors-anywhere/">https://github.com/Zibri/cloudflare-cors-anywhere<br>
+<a href="https://github.com/Jediweirdo/cloudflare-cors-anywhere/">https://github.com/Jediweirdo/cloudflare-cors-anywhere<br>
 </a><br>
 Forked from:<br>
 <a href="https://github.com/Zibri/cloudflare-cors-anywhere">https://github.com/Zibri/cloudflare-cors-anywhere</a></p>
