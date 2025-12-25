@@ -36,7 +36,7 @@ const MANUAL_BLACKLIST_ORIGINS = []; // Change these if you don't want to set up
 const MANUAL_WHITELIST_ORIGINS = [".*"]; // Change these if you don't want to set up a binding to whitelist URL Origins
 
 //--- HTML PAGE INFORMATION
-const STYLESHEET = ``;  // Do not include <style>, <head> or <html> boilerplate
+const STYLESHEET = ``;  // Do not include <style>, <head>, or <html> boilerplate
 const PAGE_HTML = {
   // Do not include <head> or <html> boilerplate
   blacklisted: `Create your own CORS proxy</br>
@@ -44,11 +44,11 @@ const PAGE_HTML = {
   // Does not include customizing usage URL, the IP/Country/Datacenter info, or the custom header info that appears if you pass any in
   homepage: `<h1>CLOUDFLARE-CORS-ANYWHERE</br>
 </h1>Source:</br>
-<a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere/'>https://github.com/Jediweirdo/cloudflare-cors-anywhere/>. 
+<a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere/'>https://github.com/Jediweirdo/cloudflare-cors-anywhere</a>. 
 Forked from <a href='https://github.com/Zibri/cloudflare-cors-anywhere'>https://github.com/Zibri/cloudflare-cors-anywhere</a></br>
 Limits:</br>
- 100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes
- Incoming requests using this URL are monitored to enforce rules. If you do not want this, <a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere'>create your own for free</a>`,
+ 100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes</br>
+ Incoming requests using this URL are logged, monitored, and visible to me. If you are not OK with this, <a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere'>create your own for free</a>`,
   // Just the readme file formatted into a website (props to a random markdown to html converter I found online)
   usage: `<h1 id="cloudflare-cors-anywhere">cloudflare-cors-anywhere</h1>
 <p>Cloudflare CORS proxy in a worker.</p>
@@ -62,8 +62,11 @@ Forked from:<br>
 <a href="https://cors-proxy.jediweirdo.workers.dev">https://cors-proxy.jediweirdo.workers.dev</a></p>
 <p>As of December 24th, 2025, this code is able to be deployed without issues to Cloudflare Workers. This repo does not support any production changes to JavaScript or Cloudflare’s Workers beyond that date.</p>
 <h2 id="note-about-the-demo-url">Note about the DEMO URL:</h2>
+<p>When using the demo URL, keep to these restrictions:</br>
+100,000 requests/day&emsp;&emsp;&ensp;          1,000 requests/10 minutes</br></p>
 <p>Abuse (other than testing) of the demo will result in a ban.<br>
-The demo accepts only fetch and xmlhttprequest.</p>
+To enforce these limits, incoming requests using this URL are logged, monitored, and visible to me. If you are not OK with this, <a href='https://github.com/Jediweirdo/cloudflare-cors-anywhere'>create your own for free</a>
+</p>
 <p>To create your own is very easy; you just need to set up a Cloudflare account and upload the worker code.</p>
 <h2 id="features">Features</h2>
 <ul>
